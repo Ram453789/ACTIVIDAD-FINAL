@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define longitud 3
+
+void ma(int matriz[longitud][longitud]) {
+    for (int i = 0; i < longitud; ++i) {
+        for (int j = 0; j < longitud; ++j) {
+            printf("Posicion (%d,%d): ", i, j);
+            scanf("%d", &matriz[i][j]);
+        }
+    }
+}
+
+void impm(int matriz[longitud][longitud]) {
+    for (int i = 0; i < longitud; ++i) {
+        for (int j = 0; j < longitud; ++j) {
+            printf("%d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int sumf(int matriz[longitud][longitud], int fila) {
+    int suma = 0;
+    for (int j = 0; j < longitud; ++j) {
+        suma += matriz[fila][j];
+    }
+    return suma;
+}
+
+int sumc(int matriz[longitud][longitud], int columna) {
+    int suma = 0;
+    for (int i = 0; i < longitud; ++i) {
+        suma += matriz[i][columna];
+    }
+    return suma;
+}
+
+int sumdiagp(int matriz[longitud][longitud]) {
+    int suma = 0;
+    for (int i = 0; i < longitud; ++i) {
+        suma += matriz[i][i];
+    }
+    return suma;
+}
+
+int sumdiagsecu(int matriz[longitud][longitud]) {
+    int suma = 0;
+    for (int i = 0; i < longitud; ++i) {
+        suma += matriz[i][longitud - 1 - i];
+    }
+    return suma;
+}
+
+int Matrizm(int matriz[longitud][longitud]) {
+    int sumr = sumf(matriz, 0);
+    
+    for (int i = 1; i < longitud; ++i) {
+        if (sumf(matriz, i) != sumr) return 0;
+    }
+
+    for (int j = 0; j < longitud; ++j) {
+        if (sumc(matriz, j) != sumr) return 0;
+    }
+
+    if (sumdiagp(matriz) != sumr || sumdiagsecu(matriz) != sumr) {
+        return 0;
+    }
+    
+    return 1;
+}
+
+
+int main() {
+    int matriz[longitud][longitud];
+    
+    printf("Ingrese los valores de su matriz:\n");
+    ma(matriz);
+    
+    printf("\nEsta es su matriz:\n");
+    impm(matriz);
+    
+    for (int i = 0; i < longitud; ++i) {
+        printf("Suma de la fila %d: %d\n", i + 1, sumf(matriz, i));
+    }
+
+    for (int j = 0; j < longitud; ++j) {
+        printf("Suma de la columna %d: %d\n", j + 1, sumc(matriz, j));
+    }
+
+    printf("Suma de la diagonal: %d\n", sumdiagp(matriz));
+    printf("Suma de la diagonal secundaria: %d\n", sumdiagsecu(matriz));
+    
+    
+    if (Matrizm(matriz)) {
+        printf("\nLa matriz es magica.\n");
+    } else {
+        printf("\nLa matriz no es magica.\n");
+    }
+    
+    return 0;
+}
